@@ -15,6 +15,9 @@ This project wasn't just about training a model; it involved addressing common C
 2. **Architecture Upgrade**: Migrated from ResNet18 to **ResNet50** to capture finer textural details, significantly improving accuracy on visually similar classes like paper vs. cardboard.
 3. **Fine-Tuning**: Performed full parameter fine-tuning with a low learning rate to adapt the pre-trained weights to specific waste textures.
 
+Check out this website:
+https://trash-detection-pmrypudmpldg5qnpbrl5s5.streamlit.app/
+
 Test Performance Example
 
 <img width="456" height="464" alt="image" src="https://github.com/user-attachments/assets/5f0ccd15-ee7b-4da5-b7b2-bad5bf01a71c" />

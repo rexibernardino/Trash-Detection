@@ -13,7 +13,7 @@ def load_model():
     # Jika file model belum ada di server Streamlit, download dari Google Drive
     if not os.path.exists(model_path):
         st.write("Mengunduh model dari Google Drive... Tunggu sebentar.")
-        url = 'https://drive.google.com/file/d/1E_acrQmB13mm9nXCsY0pJ5wY54zQB6lp/view?usp=sharing' 
+        url = '1E_acrQmB13mm9nXCsY0pJ5wY54zQB6lp' 
         gdown.download(url, model_path, quiet=False)
     
     # Load model
@@ -62,4 +62,5 @@ if uploaded_file is not None:
     st.progress(conf_score/100)
 
     st.write(f"Tingkat Kepercayaan: **{conf_score:.2f}%**")
+
 

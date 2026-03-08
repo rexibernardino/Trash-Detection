@@ -4,16 +4,22 @@ import torch.nn as nn
 from torchvision import models, transforms
 from PIL import Image
 
-# 1. Load Model (dengan Cache agar tidak loading terus-menerus)
+import os
+
 @st.cache_resource
 def load_model():
-    model = models.resnet50()
+    # Ini akan otomatis mendeteksi sistem operasi dan menyesuaikan slash-nya
+    model_path = os.path.join('TrashDetection', 'best_trashnet_model.pth')
+    
+    model = models.resnet50() 
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, 6)
-    model.load_state_dict(torch.load('TrashDetection\\best_trashnet_model.pth', map_location=torch.device('cpu')))
+    
+    # Load model dengan path yang aman
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     model.eval()
     return model
-
+    
 # 2. Setup Transformasi (Harus SAMA dengan training)
 transform = transforms.Compose([
     transforms.Resize((128, 128)),
@@ -50,4 +56,5 @@ if uploaded_file is not None:
     
     st.markdown(f"### Prediksi: **{result}**")
     st.progress(conf_score/100)
+
     st.write(f"Tingkat Kepercayaan: **{conf_score:.2f}%**")

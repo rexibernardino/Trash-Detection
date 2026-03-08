@@ -9,13 +9,19 @@ import os
 @st.cache_resource
 def load_model():
     model_path = 'best_trashnet_model.pth'
+    file_id = '1E_acrQmB13mm9nXCsY0pJ5wY54zQB6lp'
     
-    # Jika file model belum ada di server Streamlit, download dari Google Drive
     if not os.path.exists(model_path):
-        st.write("Mengunduh model dari Google Drive... Tunggu sebentar.")
-        url = '1E_acrQmB13mm9nXCsY0pJ5wY54zQB6lp' 
+        st.write("Mengunduh model...")
+        url = f'https://drive.google.com/uc?id={file_id}'
         gdown.download(url, model_path, quiet=False)
     
+    
+    file_size = os.path.getsize(model_path)
+    if file_size < 1000000: 
+        st.error(f"Error: File model rusak! Ukuran file hanya {file_size} bytes. Periksa link Google Drive.")
+        st.stop()
+        
     # Load model
     model = models.resnet50()
     num_ftrs = model.fc.in_features
@@ -24,14 +30,14 @@ def load_model():
     model.eval()
     return model
     
-# 2. Setup Transformasi (Harus SAMA dengan training)
+
 transform = transforms.Compose([
     transforms.Resize((128, 128)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-# 3. UI Streamlit
+
 st.set_page_config(page_title="Trash Detection AI", page_icon="🗑️")
 st.title("🗑️ Trash Recognition AI")
 st.write("Upload foto sampah, dan model AI kita akan mengidentifikasi jenisnya!")
@@ -62,5 +68,6 @@ if uploaded_file is not None:
     st.progress(conf_score/100)
 
     st.write(f"Tingkat Kepercayaan: **{conf_score:.2f}%**")
+
 
 
